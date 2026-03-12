@@ -40,7 +40,7 @@ export const Footer = () => {
               href="/"
               className="flex flex-row gap-1 items-center justify-start text-2xl font-display font-extrabold text-base-content"
             >
-              ActivationLed
+              LegendaryByte
             </Link>
             <p className="text-neutral/50 font-medium text-base w-full md:w-4/5">
               Behavioral Designed Activation Journeys for PLG SaaS to lift Aha!
@@ -205,7 +205,7 @@ export const Footer = () => {
       <div className="my-3 px-4 md:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-sm text-neutral">
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-8 items-start sm:items-center">
           <p className="whitespace-nowrap">
-            ©{currentYear} ActivationLed. All rights reserved.
+            ©{currentYear} LegendaryByte. All rights reserved.
           </p>
           <div className="flex flex-row gap-4">
             <Link href="/legal/privacy-policy">Privacy Policy</Link>
