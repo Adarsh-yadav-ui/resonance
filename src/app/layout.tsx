@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import ConvexClientProvider from "@/providers/ConvexProviderWithClerk";
 
 const Josefin_sans = Josefin_Sans({
   subsets: ["latin"],
@@ -35,7 +37,9 @@ export default function RootLayout({
       <body
         className={`${Josefin_sans.className} ${Josefin_sans.style} antialiased`}
       >
-        {children}
+        <ClerkProvider>
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

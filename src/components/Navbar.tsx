@@ -2,15 +2,21 @@
 
 import React from "react";
 import Image from "next/image";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated, useQuery } from "convex/react";
+import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "@/components/menu-toggle-icon";
 import { useScroll } from "@/components/use-scroll";
+import { api } from "../../convex/_generated/api";
 
 export function Header() {
   const [open, setOpen] = React.useState(false);
   const scrolled = useScroll(10);
+
+  const currentUser = useQuery(api.users.current);
 
   const links = [
     {
@@ -82,8 +88,20 @@ export function Header() {
               {link.label}
             </a>
           ))}
-          <Button variant="outline">Sign In</Button>
-          <Button>Get Started</Button>
+          <Unauthenticated>
+            <SignInButton mode="modal">
+              <Button variant="outline">Sign In</Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button>Get Started</Button>
+            </SignUpButton>
+          </Unauthenticated>
+          <Authenticated>
+            <Link href="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
+            <UserButton />
+          </Authenticated>
         </div>
         <Button
           size="icon"
@@ -110,7 +128,7 @@ export function Header() {
         >
           <div className="grid gap-y-2">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 className={buttonVariants({
                   variant: "ghost",
@@ -119,14 +137,48 @@ export function Header() {
                 href={link.href}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="flex flex-col gap-2">
-            <Button variant="outline" className="w-full">
-              Sign In
-            </Button>
-            <Button className="w-full">Get Started</Button>
+            <Unauthenticated>
+              <SignInButton>
+                <Button className="w-full">Sign In</Button>
+              </SignInButton>
+              <SignUpButton>
+                <Button className="w-full">Get Started</Button>
+              </SignUpButton>
+            </Unauthenticated>
+            <Authenticated>
+              <div>
+                <Button className="min-w-full">
+                  <Link href="/dashboard">Navigate to dashboard</Link>
+                </Button>
+                <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 flex-1 min-w-0">
+                  <div className="shrink-0 pt-2">
+                    <UserButton />
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-base font-semibold text-gray-900 dark:text-gray-100 truncate">
+                      {(currentUser?.firstName == undefined && (
+                        <span className="text-md dark:text-gray-400 truncate">
+                          Fetching Name
+                        </span>
+                      )) ||
+                        currentUser?.firstName}
+                    </span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      {(currentUser?.email == undefined && (
+                        <span className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                          Fetching Email
+                        </span>
+                      )) ||
+                        currentUser?.email}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Authenticated>
           </div>
         </div>
       </div>

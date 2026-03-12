@@ -1,13 +1,31 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/ui/animated-group";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  Mic2, Globe2, Zap, ShieldCheck, Layers, AudioWaveform,
-  Languages, Cpu, Users, ArrowRight
+  Mic2,
+  Globe2,
+  Zap,
+  ShieldCheck,
+  Layers,
+  AudioWaveform,
+  Languages,
+  Cpu,
+  Users,
+  ArrowRight,
 } from "lucide-react";
+import { Authenticated, Unauthenticated } from "convex/react";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const transitionVariants = {
   item: {
@@ -70,17 +88,20 @@ const useCases = [
   {
     icon: AudioWaveform,
     title: "Audiobooks & Narration",
-    description: "Turn manuscripts into full-length audiobooks with a single voice, consistent across every chapter.",
+    description:
+      "Turn manuscripts into full-length audiobooks with a single voice, consistent across every chapter.",
   },
   {
     icon: Languages,
     title: "Content Localization",
-    description: "Dub videos and podcasts into dozens of languages while preserving the original speaker's tone.",
+    description:
+      "Dub videos and podcasts into dozens of languages while preserving the original speaker's tone.",
   },
   {
     icon: Users,
     title: "AI Agents & Assistants",
-    description: "Give your AI product a voice it can own — expressive, responsive, and always on-brand.",
+    description:
+      "Give your AI product a voice it can own — expressive, responsive, and always on-brand.",
   },
 ];
 
@@ -102,7 +123,14 @@ export function HeroSection() {
             <div className="sm:mx-auto lg:mr-auto">
               <AnimatedGroup
                 variants={{
-                  container: { visible: { transition: { staggerChildren: 0.05, delayChildren: 0.75 } } },
+                  container: {
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.05,
+                        delayChildren: 0.75,
+                      },
+                    },
+                  },
                   ...transitionVariants,
                 }}
               >
@@ -110,22 +138,44 @@ export function HeroSection() {
                   The most realistic AI voice platform
                 </h1>
                 <p className="mt-8 max-w-2xl text-pretty text-lg">
-                  Resonance brings your words to life with hyper-realistic AI voices. Create, clone,
-                  and deploy lifelike speech for any app, content, or experience.
+                  Resonance brings your words to life with hyper-realistic AI
+                  voices. Create, clone, and deploy lifelike speech for any app,
+                  content, or experience.
                 </p>
                 <div className="mt-12 flex items-center gap-2">
-                  <div className="bg-foreground/10 rounded-[14px] border p-0.5">
-                    <Button asChild size="lg" className="rounded-xl px-5 text-base">
-                      <Link href="#link">
-                        <span className="text-nowrap">Start for Free</span>
-                      </Link>
-                    </Button>
-                  </div>
-                  <Button asChild size="lg" variant="ghost" className="h-10.5 rounded-xl px-5 text-base">
-                    <Link href="#link">
-                      <span className="text-nowrap">Hear a demo</span>
+                  <Unauthenticated>
+                    <div className="bg-foreground/10 rounded-[14px] border p-0.5">
+                      <SignInButton>
+                        <Button
+                          asChild
+                          size="lg"
+                          className="rounded-xl px-5 text-base"
+                        >
+                          <span className="text-nowrap">Start for Free</span>
+                        </Button>
+                      </SignInButton>
+                    </div>
+                    <SignUpButton>
+                      <Button
+                        asChild
+                        size="lg"
+                        variant="ghost"
+                        className="h-10.5 rounded-xl px-5 text-base"
+                      >
+                        <span className="text-nowrap">Hear a demo</span>
+                      </Button>
+                    </SignUpButton>
+                  </Unauthenticated>
+                  <Authenticated>
+                    <Link href="/dashboard">
+                      <Button>
+                        Navigate to Dashboard
+                        <div className="hover:ml-2 hover:scale-110 transition-all duration-300">
+                          <ArrowRight />
+                        </div>
+                      </Button>
                     </Link>
-                  </Button>
+                  </Authenticated>
                 </div>
               </AnimatedGroup>
             </div>
@@ -133,7 +183,11 @@ export function HeroSection() {
 
           <AnimatedGroup
             variants={{
-              container: { visible: { transition: { staggerChildren: 0.05, delayChildren: 0.75 } } },
+              container: {
+                visible: {
+                  transition: { staggerChildren: 0.05, delayChildren: 0.75 },
+                },
+              },
               ...transitionVariants,
             }}
           >
@@ -176,26 +230,33 @@ export function HeroSection() {
       {/* ── Features ── */}
       <section className="mx-auto max-w-5xl px-6 py-24">
         <div className="mb-12">
-          <Badge variant="outline" className="mb-4">Features</Badge>
+          <Badge variant="outline" className="mb-4">
+            Features
+          </Badge>
           <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
             Everything you need to build with voice
           </h2>
           <p className="text-muted-foreground mt-4 max-w-xl text-base">
-            From instant voice cloning to real-time streaming, Resonance gives you
-            the full stack to ship voice-powered products fast.
+            From instant voice cloning to real-time streaming, Resonance gives
+            you the full stack to ship voice-powered products fast.
           </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <Card key={f.title} className="group relative overflow-hidden transition-shadow hover:shadow-md">
+            <Card
+              key={f.title}
+              className="group relative overflow-hidden transition-shadow hover:shadow-md"
+            >
               <CardHeader className="pb-3">
                 <div className="mb-3 flex items-center justify-between">
                   <div className="bg-muted flex size-10 items-center justify-center rounded-lg">
                     <f.icon className="text-foreground size-5" />
                   </div>
                   {f.badge && (
-                    <Badge variant="secondary" className="text-xs">{f.badge}</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {f.badge}
+                    </Badge>
                   )}
                 </div>
                 <CardTitle className="text-base">{f.title}</CardTitle>
@@ -215,25 +276,32 @@ export function HeroSection() {
       {/* ── Use Cases ── */}
       <section className="mx-auto max-w-5xl px-6 py-24">
         <div className="mb-12">
-          <Badge variant="outline" className="mb-4">Use Cases</Badge>
+          <Badge variant="outline" className="mb-4">
+            Use Cases
+          </Badge>
           <h2 className="text-3xl font-medium tracking-tight sm:text-4xl">
             Built for every kind of creator
           </h2>
           <p className="text-muted-foreground mt-4 max-w-xl text-base">
-            Whether you're an indie developer, a media company, or an enterprise — Resonance
-            scales with your ambitions.
+            Whether you're an indie developer, a media company, or an enterprise
+            — Resonance scales with your ambitions.
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-3">
           {useCases.map((u) => (
-            <Card key={u.title} className="border-border/60 bg-muted/30 flex flex-col gap-4 p-6">
+            <Card
+              key={u.title}
+              className="border-border/60 bg-muted/30 flex flex-col gap-4 p-6"
+            >
               <div className="bg-background flex size-10 items-center justify-center rounded-lg border shadow-sm">
                 <u.icon className="size-5" />
               </div>
               <div>
                 <h3 className="font-medium">{u.title}</h3>
-                <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{u.description}</p>
+                <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
+                  {u.description}
+                </p>
               </div>
             </Card>
           ))}
@@ -241,27 +309,41 @@ export function HeroSection() {
       </section>
 
       {/* ── CTA Banner ── */}
-      <section className="mx-auto max-w-5xl px-6 pb-24"> 
+      <section className="mx-auto max-w-5xl px-6 pb-24">
         <Card className="from-foreground to-foreground/90 text-background overflow-hidden bg-linear-to-br p-10">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-2xl font-semibold">Ready to hear the difference?</h2>
+              <h2 className="text-2xl font-semibold">
+                Ready to hear the difference?
+              </h2>
               <p className="text-background/70 mt-2 max-w-md text-sm">
-                Join over a million creators already using Resonance to power their
-                next generation of voice experiences.
+                Join over a million creators already using Resonance to power
+                their next generation of voice experiences.
               </p>
             </div>
-            <Button
-              asChild
-              size="lg"
-              variant="secondary"
-              className="shrink-0 rounded-xl px-6"
-            >
-              <Link href="#link" className="flex items-center gap-2">
-                Get started free
-                <ArrowRight className="size-4" />
+            <Unauthenticated>
+              <SignUpButton>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="secondary"
+                  className="shrink-0 rounded-xl px-6"
+                >
+                  Get started free
+                  <ArrowRight className="size-4" />
+                </Button>
+              </SignUpButton>
+            </Unauthenticated>
+            <Authenticated>
+              <Link href="/dashboard">
+                <Button variant="secondary">
+                  Navigate to Dashboard
+                  <div className="hover:ml-2 hover:scale-110 transition-all duration-300">
+                    <ArrowRight />
+                  </div>
+                </Button>
               </Link>
-            </Button>
+            </Authenticated>
           </div>
         </Card>
       </section>
