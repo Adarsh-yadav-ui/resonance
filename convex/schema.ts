@@ -15,4 +15,12 @@ export default defineSchema({
   })
     .index("byClerkUserId", ["clerkUserId"])
     .index("byEmail", ["email"]),
+
+  voice: defineTable({
+    title: v.string(),
+    cloudId: v.string(),
+    userId: v.id("users"),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }),
 });
